@@ -10,6 +10,7 @@ from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('',book_list),
+    path('profile/',profile_view),
     path('admin/', admin.site.urls),
     path('books/', book_list, name='book_list'),
     path('book/<int:pk>/', book_detail, name='book_detail'),
