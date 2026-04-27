@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой профиль | ЛитВечер</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sidebar-card { border-radius: 15px; }
+        .calendar-table { background: white; border-radius: 10px; overflow: hidden; }
+        .friend-item { transition: 0.2s; }
+        .friend-item:hover { background-color: #f1f3f5; }
+    </style>
+</head>
+<body style="background-color: #fdfaf6;">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'book_list' %}">📚 ЛитВечер</a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="{% url 'book_list' %}">Библиотека</a>
+            <a class="nav-link active" href="{% url 'profile' %}">Мой профиль</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card p-4 shadow-sm sidebar-card mb-4">
+                <div class="text-center">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                        {{ user.username|first|upper }}
+                    </div>
+                    <h3>{{ user.username }}</h3>
+                    <p class="text-muted">ID: {{ user.id }}</p>
+                    <p class="small text-secondary">Участник литературных чтений</p>
+                    <hr>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'user_search' %}" class="btn btn-primary">🔍 Найти друзей</a>
+                        <a href="/admin/password_change/" class="btn btn-sm btn-outline-secondary">Сменить пароль</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-3 shadow-sm mt-3">
+                <h5>👥 Мои друзья</h5>
+                <div class="list-group list-group-flush">
+                    {% for friend in friends %}
+                        <div class="list-group-item d-flex align-items-center">
+                            <div class="rounded-circle bg-primary text-white me-2 d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                {{ friend.username|slice:":1"|upper }}
+                            </div>
+                            <span>{{ friend.username }}</span>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted small">Пока никого нет.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+        <div class="card p-4 shadow-sm mb-4">
+            <h4 class="mb-3">📚 Моя книжная полка</h4>
+            <div class="row">
+                {% for book in favorite_books %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ book.title }}</h6>
+                                <p class="small text-muted">{{ book.author }}</p>
+                                <a href="{% url 'book_detail' book.id %}" class="btn btn-sm btn-outline-primary">Читать</a>
+                                <a href="{% url 'toggle_favorite' book.id %}" class="btn btn-sm btn-link text-danger">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted">Вы еще не добавили ни одной книги на свою полку.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+            <h4 class="mb-3">📅 История чтения (Календарь)</h4>
+            <div class="calendar-table shadow-sm border">
+                <table class="table">
+                    {% for book in favorite_books %}
+                    <tr>
+                        <td>20.04.2026</td> <td>{{ book.title }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2">Вы еще не открывали книги</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
