@@ -14,17 +14,14 @@ def event_list(request):
     events = Event.objects.all() # Без этой строки список будет пустым
     return render(request, 'books/event_list.html', {'events': events})
 
+@login_required  # ← добавь это
 def profile_view(request):
-    # Берем книги, которые пользователь добавил в избранное
     favorite_books = request.user.favorite_books.all()
-    
-    # Берем других пользователей (как друзей)
-    friends = User.objects.exclude(id=request.user.id)[:5] 
-
+    friends = User.objects.exclude(id=request.user.id)[:5]  # убери http:// из id
     return render(request, 'books/profile.html', {
         'favorite_books': favorite_books,
         'friends': friends,
-        'reading_history': favorite_books.order_by('-id') # История на основе избранного
+        'reading_history': favorite_books.order_by('-id')
     })
 
 def user_search(request):
