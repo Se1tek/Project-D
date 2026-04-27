@@ -8,8 +8,8 @@ from .models import Event
 from django.contrib.auth.models import User # Исправляет NameError со скриншота 8
 from django.contrib.auth.decorators import login_required
 
-# def book_list(request):
-#     return render(request, 'books/book_list.html')
+def book_list(request):
+    return render(request, 'books/book_list.html')
 
 def event_list(request):
     events = Event.objects.all() # Без этой строки список будет пустым
@@ -43,8 +43,13 @@ def book_detail(request, pk):
     # Передаем переменную 'book' в ваш HTML-шаблон
     return render(request, 'books/book_detail.html', {'book': book})
 
+@login_required
 def toggle_favorite(request, pk):
-    # Пока просто возвращаем пользователя обратно на список книг
+    book = get_object_or_404(Book, id=pk)
+    if request.user in book.favorited_by.all():
+        book.favorited_by.remove(request.user)
+    else:
+        book.favorited_by.add(request.user)
     return redirect('book_list')
 
 def book_list(request):

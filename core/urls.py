@@ -7,6 +7,7 @@ from main.views import (
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('',book_list),
@@ -18,6 +19,8 @@ urlpatterns = [
     path('events/', event_list, name='event_list'),
     path('profile/', profile_view, name='profile'),
     path('search/', user_search, name='user_search'), # Исправлено: убрали views.
+    path('accounts/login/', auth_views.LoginView.as_view(), name='login'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
 
 if settings.DEBUG:
