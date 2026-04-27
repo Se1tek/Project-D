@@ -17,6 +17,7 @@ urlpatterns = [
     path('profile/', profile_view, name='profile'),
     path('search/', user_search, name='user_search'), # Исправлено: убрали views.
     path('favicon.ico', RedirectView.as_view(url='', permanent=True)),
+    path('', include('main.urls')),
 ]
 
 if settings.DEBUG:
