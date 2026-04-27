@@ -9,6 +9,7 @@ from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
+    path('',book_list),
     path('admin/', admin.site.urls),
     path('books/', book_list, name='book_list'),
     path('book/<int:pk>/', book_detail, name='book_detail'),
@@ -16,8 +17,6 @@ urlpatterns = [
     path('events/', event_list, name='event_list'),
     path('profile/', profile_view, name='profile'),
     path('search/', user_search, name='user_search'), # Исправлено: убрали views.
-    path('favicon.ico', RedirectView.as_view(url='', permanent=True)),
-    path('', include('main.urls')),
 ]
 
 if settings.DEBUG:
