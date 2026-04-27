@@ -6,6 +6,7 @@ from django.contrib.auth.models import User  # Обязательно для р�
 from django.db.models import Q               # Нужно для сложного поиска
 from .models import Event
 from django.contrib.auth.models import User # Исправляет NameError со скриншота 8
+from django.contrib.auth.decorators import login_required
 
 # def book_list(request):
 #     return render(request, 'books/book_list.html')
